@@ -1,0 +1,41 @@
+# -------------------------
+# Python
+# -------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# -------------------------
+# Virtual environments
+# -------------------------
+.env
+venv/
+.venv/
+
+# -------------------------
+# Testing
+# -------------------------
+.pytest_cache/
+
+# -------------------------
+# Project-specific
+# -------------------------
+# Saved network files (students generate their own)
+networks/
+# Saved outputs
+visuals/
+
+# Config (use config_example.json as the template)
+config.json
+
+# -------------------------
+# IDE / OS
+# -------------------------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

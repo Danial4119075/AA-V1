@@ -1,0 +1,18 @@
+{
+    "seed": 2,
+    "num_residents": 12,
+    "num_edges": 50,
+    "max_transmission_prob": 0.025,
+    "vulnerability_range": [0.1, 1.0],
+    "dosage_range": [1, 20],
+    "graph_type": "list",
+    "risk_solver": "monte_carlo",
+    "time_horizon": 10,
+    "simulations": 100,
+    "total_doses": 50,
+    "run_vaccine": true,
+    "vaccine_strategy": "brute_force",
+    "visualise": true,
+    "visual_filename": "example_output",
+    "print_struct": false
+}
