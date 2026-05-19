@@ -69,11 +69,34 @@ def task_b(graph: Graph,
     table[0][source.index] = 1.0
 
     # --------------------------------------------------
-    # TODO: Fill the table column by column from t=1 to t=T.
-    # For each day t, use only values from table[t-1].
-    # For each vertex, compute the escape probability and
-    # subtract from 1 to get the infection risk.
-    # Make sure patient zero stays at 1.0 for all t.
+    # Fill the table day by day from t=1 to t=T using the
+    # recurrence. Each column depends only on the previous
+    # one, so within a column the order of residents is
+    # irrelevant — we read from prev and write to curr.
     # --------------------------------------------------
+    vertices = graph.get_vertices()
+
+    for t in range(1, T + 1):
+        prev = table[t - 1]
+        curr = table[t]
+
+        for vertex in vertices:
+            i = vertex.index
+
+            # Probability vertex i was still healthy entering day t
+            escape = 1.0 - prev[i]
+
+            # Multiply in the probability that each infected neighbour
+            # fails to transmit on day t
+            for neighbour, weight in graph.get_neighbours(vertex):
+                escape *= 1.0 - prev[neighbour.index] * weight
+
+            curr[i] = 1.0 - escape
+
+        # Patient zero is infected with certainty for all t.
+        # The recurrence already preserves this (escape factor is 0
+        # when prev[source] == 1.0), but enforce it defensively to
+        # match the Monte Carlo baseline and guard against drift.
+        curr[source.index] = 1.0
 
     return table
