@@ -44,44 +44,73 @@ def task_d(eligible: list[Person],
     C = total_doses
 
     # --------------------------------------------------
-    # Set up your DP memo table here.
-    # Think carefully about what each cell should store.
-    # Hint: you need to track both benefit AND doses used
-    # to handle tiebreaking correctly.
+    # memo[i][c] = (best_benefit, min_doses) achievable
+    # using the first i persons with capacity c.
+    # None means the subproblem has not yet been solved.
+    # Filling only reached subproblems (top-down) avoids
+    # the n*C work of a bottom-up fill on instances where
+    # large per-person costs make many (i, c) pairs
+    # unreachable from (n, C).
     # --------------------------------------------------
-
-    # memo[i][c] stores the best result achievable using
-    # the first i persons with capacity c.
-    # None indicates the subproblem has not yet been solved.
     memo: list[list[tuple[float, int] | None]] = [
         [None] * (C + 1) for _ in range(n + 1)
     ]
 
-    # --------------------------------------------------
-    # TODO: implement your DP solution here.
-    # For each person i and antiviral dose c, decide whether
-    # to include or skip this person.
-    # Hint: consider two options:
-    #   1. Skip person i
-    #   2. Include person i (only valid if dosage fits)
-    # Don't forget tiebreaking on minimum doses.
-    # --------------------------------------------------
+    # Float tolerance: benefits are probabilities in [0, 1]
+    # and sums stay well under n, so 1e-12 safely separates
+    # genuinely different totals from rounding noise.
+    EPS = 1e-12
+
+    def solve(i: int, c: int) -> tuple[float, int]:
+        """Best (benefit, doses) using the first i persons under capacity c."""
+        if i == 0 or c == 0:
+            return (0.0, 0)
+        if memo[i][c] is not None:
+            return memo[i][c]
+
+        # Option 1: skip person i-1
+        skip_b, skip_d = solve(i - 1, c)
+        best = (skip_b, skip_d)
+
+        # Option 2: take person i-1 (only if their dose requirement fits)
+        person = eligible[i - 1]
+        cost = person.dosage_requirement
+        if cost <= c:
+            sub_b, sub_d = solve(i - 1, c - cost)
+            take_b = sub_b + person.benefit
+            take_d = sub_d + cost
+            # Lexicographic: maximise benefit, then minimise doses
+            if take_b > skip_b + EPS:
+                best = (take_b, take_d)
+            elif abs(take_b - skip_b) < EPS and take_d < skip_d:
+                best = (take_b, take_d)
+
+        memo[i][c] = best
+        return best
+
+    best_benefit, best_doses = solve(n, C)
 
     # --------------------------------------------------
-    # TODO: backtrack through your memo table to recover
-    # which persons were selected.
-    # Hint: work backwards from the full problem —
-    # if the result changes when you remove person i,
-    # they were included. Don't forget to check doses
-    # as well as benefit when backtracking.
+    # Backtrack: replay the same skip-vs-take comparison
+    # used in solve() to recover which persons were picked.
+    # Using solve() (not raw memo lookups) means c == 0 and
+    # i == 0 base cases are handled uniformly.
     # --------------------------------------------------
-
-    # --------------------------------------------------
-    # These must be set correctly before returning.
-    # Do not remove or rename them.
-    # --------------------------------------------------
-    best_subset: list[Person] = []  # DELETE THIS LINE after implementing
-    best_benefit: float = 0.0       # DELETE THIS LINE after implementing
-    best_doses: int = 0             # DELETE THIS LINE after implementing
+    best_subset: list[Person] = []
+    c = C
+    for i in range(n, 0, -1):
+        person = eligible[i - 1]
+        cost = person.dosage_requirement
+        skip_b, skip_d = solve(i - 1, c)
+        if cost <= c:
+            sub_b, sub_d = solve(i - 1, c - cost)
+            take_b = sub_b + person.benefit
+            take_d = sub_d + cost
+            took = (take_b > skip_b + EPS) or (
+                abs(take_b - skip_b) < EPS and take_d < skip_d
+            )
+            if took:
+                best_subset.append(person)
+                c -= cost
 
     return best_subset, best_benefit, best_doses, memo
