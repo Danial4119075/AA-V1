@@ -74,11 +74,13 @@ on tier *T*<sub>k+1</sub>.
 remaining capacity through each tier:
 
 ```
-remaining ← C
+remaining = C
+selected = []
 for k = 1 to K do
-    subset_k, benefit_k, used_k, _ ← task_d(T_k, remaining)
-    remaining ← remaining − used_k
-return ⋃ subset_k
+    subset_k, benefit_k, used_k, _ = task_d(T_k, remaining)
+    selected += subset_k
+    remaining -= used_k
+return selected
 ```
 
 Each call uses the unchanged single-tier DP above; only the input
