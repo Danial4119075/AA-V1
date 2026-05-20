@@ -46,7 +46,7 @@ polynomial slopes appear as straight lines.
 
 ## 3. Empirical Analysis (2.5 marks)
 
-![Figure 1 — Runtime of all four (algorithm, representation) combinations across the four sweeps.](figures/task_c_combined.png)
+![Runtime of all four (algorithm, representation) combinations across the four sweeps.](figures/task_c_combined.png)
 
 **(a) vs n.** All four series are straight log-log lines of slope ≈ 2,
 matching the predicted scaling (at d = 0.30, *m* ≈ 0.15*n*², so even

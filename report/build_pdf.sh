@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Build report.pdf from the per-task markdown files.
+#
+# Requirements: pandoc, tectonic (both available via `brew install`).
+# Uses macOS-bundled fonts: Arial Unicode MS for body, Menlo for code.
+#
+# Run from anywhere — paths are resolved relative to this script.
+
+set -euo pipefail
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+REPO_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
+
+cd "$REPO_ROOT"
+
+pandoc \
+    report/_title.md \
+    report/task_b.md \
+    report/task_c.md \
+    report/task_d.md \
+    -o report.pdf \
+    --pdf-engine=tectonic \
+    --resource-path=report
+
+echo "Wrote $(pwd)/report.pdf ($(mdls -name kMDItemNumberOfPages -raw report.pdf 2>/dev/null || echo '?') pages)"
