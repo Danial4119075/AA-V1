@@ -22,4 +22,7 @@ pandoc \
     --pdf-engine=tectonic \
     --resource-path=report
 
+# Refresh Spotlight metadata so mdls returns the fresh page count (mdls
+# otherwise reads its cached index from the previous build).
+mdimport -t report.pdf 2>/dev/null || true
 echo "Wrote $(pwd)/report.pdf ($(mdls -name kMDItemNumberOfPages -raw report.pdf 2>/dev/null || echo '?') pages)"

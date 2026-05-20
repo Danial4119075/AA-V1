@@ -1,12 +1,14 @@
 ---
-geometry: margin=2.2cm
-fontsize: 11pt
+geometry: margin=1.8cm
+fontsize: 10pt
 linkcolor: blue
 urlcolor: blue
 colorlinks: true
 mainfont: "Arial Unicode MS"
 monofont: "Menlo"
 header-includes:
+    - \usepackage{float}
+    - \floatplacement{figure}{H}
     - \usepackage{newunicodechar}
     - \newunicodechar{⋃}{\ensuremath{\bigcup}}
     - \usepackage{fancyhdr}
