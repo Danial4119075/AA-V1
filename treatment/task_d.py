@@ -3,7 +3,7 @@
 # Dynamic programming solution for the antiviral
 # allocation program.
 #
-# __author__ = 'YOUR NAME HERE'
+# __author__ = 'Danial'
 # __project__ = 'Modelling a Disease Outbreak'
 # __copyright__ = 'Copyright 2026, RMIT University'
 # -------------------------------------------------
