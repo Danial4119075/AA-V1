@@ -24,7 +24,7 @@ Four free parameters drive the runtime: **n, m (or density d = m / C(n,2)), T, X
 | (c) | *d* ∈ {0.05, 0.1, 0.2, 0.4, 0.8}   | n = 60, T = 8, X = 50   | Matrix density-independence vs list density-dependence |
 | (d) | *X* ∈ {10, 30, 100, 300, 1000}     | n = 60, d = 0.30, T = 8 | MC linear-in-*X*; DP independent |
 
-Each point is the mean of **3 trials on independent random graphs** (graph seeds 100/101/102; MC noise seeds 7/8/9). Only the algorithm call is timed — graph construction is excluded per the spec tip. Plots use log axes when the swept parameter spans more than one decade so polynomial slopes appear as straight lines.
+Each point is the mean of **3 trials on independent random graphs** (graph seeds 100/101/102; MC noise seeds 7/8/9), timed with `utils/timer.py` inside the sweep driver `task_c_analysis.py`. Only the algorithm call is timed — graph construction is excluded per the spec tip. Plots use log axes when the swept parameter spans more than one decade so polynomial slopes appear as straight lines.
 
 ## 3. Empirical Analysis (2.5 marks)
 
@@ -42,6 +42,6 @@ Each point is the mean of **3 trials on independent random graphs** (graph seeds
 
 Results match §1: every slope agrees with the dominant complexity term within constant factors, and the qualitative features (matrix density-independence, MC quadratic in *T*, DP independent of *X*) are visible at a glance. Minor deviations: MC is slightly sub-quadratic in *T* due to fixed per-day RNG/bookkeeping overhead; at small *n* DP-matrix is only marginally slower than DP-list because contiguous rows are more cache-friendly than linked lists.
 
-**Recommendation for Metropolis.** The city is large, sparsely connected, modest *T*. Cost ordering: DP-list (O(*Tm*)) ≪ DP-matrix (O(*Tn*²)) ≪ MC-list (O(*XT*²*m*)) ≪ MC-matrix (O(*XT*²*n*²)). **DP-list wins on every axis** — exact, *X*-free, linear in *T*, scales with *m* not *n*². At n = 60, d = 0.05 it ran ~145× faster than MC-list and ~3.5× faster than DP-matrix. **Daily updates to weights/connections do not change this**: the DP recurrence is structural, generalises to time-varying *w*<sub>ij,t</sub> at the same O(*Tm*) cost, and is a sub-second per-day job at city scale; MC gains nothing from incremental updates either. MC only overtakes DP when the model itself outgrows a closed-form recurrence (heterogeneous incubation, agent memory) and exact computation becomes intractable.
+**Recommendation for Metropolis.** The city is large, sparsely connected, modest *T*. Cost ordering: DP-list (O(*Tm*)) ≪ DP-matrix (O(*Tn*²)) ≪ MC-list (O(*XT*²*m*)) ≪ MC-matrix (O(*XT*²*n*²)). **DP-list wins on every axis** — exact, *X*-free, linear in *T*, scales with *m* not *n*². At n = 60, d = 0.05 it ran ~145× faster than MC-list (*sub-second per day vs minutes at city scale*) and ~3.5× faster than DP-matrix. **Daily updates to weights/connections do not change this**: the DP recurrence is structural, generalises to time-varying *w*<sub>ij,t</sub> at the same O(*Tm*) cost, and is a sub-second per-day job at city scale; MC gains nothing from incremental updates either. MC only overtakes DP when the model itself outgrows a closed-form recurrence (heterogeneous incubation, agent memory) and exact computation becomes intractable.
 
 \newpage
