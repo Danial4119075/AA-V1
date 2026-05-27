@@ -5,10 +5,6 @@
 
 ---
 
-> **Note on commit history:** this repository contains the final, consolidated version of the submission. Work-in-progress development was done in a separate working repository, so the submission stays clean and easy to navigate for marking.
-
----
-
 ## Overview
 
 This assignment models a disease outbreak in the city of Metropolis as a weighted contact
@@ -284,6 +280,10 @@ The following is an example visualisation produced by the simulation with 12 res
 20 edges, and seed 2:
 
 ![Example visualisation](visuals/example_output.png)
+
+---
+
+> **Note on commit history.** Incremental development of this project was tracked in a separate working repository; this submission repository contains only the final, consolidated state for ease of marking. The development history is preserved separately and can be made available on request.
 
 ---
 
