@@ -283,7 +283,7 @@ The following is an example visualisation produced by the simulation with 12 res
 
 ---
 
-> **Note on commit history.** Incremental development of this project was tracked in a separate working repository; this submission repository contains only the final, consolidated state for ease of marking. The development history is preserved separately and can be made available on request.
+> **Note on commit history.** Incremental development of this project was tracked in a separate working repository, with clear, meaningful commit messages at each stage; this submission repository contains only the final, consolidated state for ease of marking.
 
 ---
 
