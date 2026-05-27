@@ -5,6 +5,10 @@
 
 ---
 
+> **Note on commit history:** this repository contains the final, consolidated version of the submission. Work-in-progress development was done in a separate working repository, so the submission stays clean and easy to navigate for marking.
+
+---
+
 ## Overview
 
 This assignment models a disease outbreak in the city of Metropolis as a weighted contact
